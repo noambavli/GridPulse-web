@@ -1,0 +1,83 @@
+<section class="alerts">
+  <div class="alerts__header">
+    <h1>Alerts</h1>
+    <div class="filters">
+      <select #sev (change)="onSeverityChange(sev.value)">
+        <option value="">All severities</option>
+        <option value="Info">Info</option>
+        <option value="Warning">Warning</option>
+        <option value="Critical">Critical</option>
+      </select>
+      <select #st (change)="onStatusChange(st.value)">
+        <option value="">All statuses</option>
+        <option value="unresolved">Unresolved</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+  </div>
+
+  @if (error()) {
+    <p class="state state--error">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="state">Loading alerts…</p>
+  } @else if (alerts().length === 0) {
+    <p class="state">No alerts match the current filters.</p>
+  } @else {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Severity</th>
+          <th>Type</th>
+          <th>Message</th>
+          <th>Triggered</th>
+          <th>Status</th>
+          @if (isAdmin()) {
+            <th></th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (alert of alerts(); track alert.id) {
+          <tr>
+            <td>
+              <span
+                class="badge"
+                [class.badge--info]="alert.severity === 'Info'"
+                [class.badge--warning]="alert.severity === 'Warning'"
+                [class.badge--critical]="alert.severity === 'Critical'"
+              >
+                {{ alert.severity }}
+              </span>
+            </td>
+            <td>{{ alert.type }}</td>
+            <td class="message">{{ alert.message }}</td>
+            <td>{{ alert.triggeredAt | date: 'short' }}</td>
+            <td>
+              @if (alert.isResolved) {
+                <span class="status status--resolved">Resolved</span>
+              } @else {
+                <span class="status status--open">Open</span>
+              }
+            </td>
+            @if (isAdmin()) {
+              <td>
+                @if (!alert.isResolved) {
+                  <button
+                    type="button"
+                    class="resolve"
+                    [disabled]="resolvingId() === alert.id"
+                    (click)="resolve(alert.id)"
+                  >
+                    {{ resolvingId() === alert.id ? 'Resolving…' : 'Resolve' }}
+                  </button>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

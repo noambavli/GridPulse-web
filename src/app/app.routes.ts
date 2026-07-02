@@ -19,6 +19,10 @@ export const routes: Routes = [
         path: 'devices/:id',
         loadComponent: () => import('./features/devices/device-detail').then((m) => m.DeviceDetail),
       },
+      {
+        path: 'alerts',
+        loadComponent: () => import('./features/alerts/alert-list').then((m) => m.AlertList),
+      },
     ],
   },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },

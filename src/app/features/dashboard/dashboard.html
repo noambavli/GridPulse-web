@@ -3,6 +3,15 @@
     <span class="topbar__mark">⚡</span>
     <span class="topbar__name">GridPulse</span>
   </div>
+  <nav class="topbar__nav">
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Devices</a
+    >
+    <a routerLink="/dashboard/alerts" routerLinkActive="active">Alerts</a>
+  </nav>
   <div class="topbar__user">
     @if (user(); as u) {
       <span class="topbar__username">{{ u.username }}</span>
