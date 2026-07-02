@@ -1,0 +1,49 @@
+<div class="login-page">
+  <form class="login-card" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="brand">
+      <span class="brand__mark">⚡</span>
+      <h1 class="brand__name">GridPulse</h1>
+    </div>
+    <p class="subtitle">Sign in to the energy monitoring dashboard</p>
+
+    <label class="field">
+      <span class="field__label">Username</span>
+      <input
+        type="text"
+        formControlName="username"
+        autocomplete="username"
+        placeholder="admin"
+      />
+      @if (form.controls.username.touched && form.controls.username.invalid) {
+        <span class="field__error">Username is required.</span>
+      }
+    </label>
+
+    <label class="field">
+      <span class="field__label">Password</span>
+      <input
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        placeholder="••••••••"
+      />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+        <span class="field__error">Password is required.</span>
+      }
+    </label>
+
+    @if (error()) {
+      <div class="alert">{{ error() }}</div>
+    }
+
+    <button type="submit" class="submit" [disabled]="loading()">
+      {{ loading() ? 'Signing in…' : 'Sign in' }}
+    </button>
+
+    <div class="demo">
+      <span>Demo accounts</span>
+      <code>admin / admin123</code>
+      <code>viewer / viewer123</code>
+    </div>
+  </form>
+</div>

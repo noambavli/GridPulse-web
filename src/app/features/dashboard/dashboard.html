@@ -1,0 +1,18 @@
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__mark">⚡</span>
+    <span class="topbar__name">GridPulse</span>
+  </div>
+  <div class="topbar__user">
+    @if (user(); as u) {
+      <span class="topbar__username">{{ u.username }}</span>
+      <span class="topbar__role" [class.topbar__role--admin]="isAdmin()">{{ u.role }}</span>
+    }
+    <button type="button" class="topbar__logout" (click)="logout()">Log out</button>
+  </div>
+</header>
+
+<main class="content">
+  <h1>Dashboard</h1>
+  <p class="placeholder">Device list and live charts land in the next steps.</p>
+</main>
