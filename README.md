@@ -6,54 +6,76 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 To start a local development server, run:
 
-```bash
-ng serve
-```
+Angular dashboard for **GridPulse**, a real-time energy / IoT consumption monitor. It handles
+login, lists devices, charts consumption trends, shows and resolves alerts, and updates live
+over SignalR.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The backend API and the full Docker Compose stack live in a separate repository
+([`GridPulse-server`](https://github.com/noambavli/GridPulse-server)).
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Stack
 
-```bash
-ng generate component component-name
-```
+- Angular 22 (standalone components, signals, lazy-loaded routes)
+- Chart.js for consumption trends
+- `@microsoft/signalr` for live readings and alerts
+- JWT auth (HTTP interceptor + route guard), SCSS styling
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Run locally
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Requires Node.js ≥ 22.22.3 / ≥ 24.15.0 / ≥ 26.0.0 (Angular 22 CLI requirement) and the
+GridPulse API running on `http://localhost:5103`.
 
 ```bash
-ng test
+npm install
+npm start
 ```
 
-## Running end-to-end tests
+Open http://localhost:4200 and sign in:
 
-For end-to-end (e2e) testing, run:
+| Role   | Username | Password    |
+| ------ | -------- | ----------- |
+| Admin  | `admin`  | `admin123`  |
+| Viewer | `viewer` | `viewer123` |
+
+Admins can resolve alerts; viewers are read-only.
+
+---
+
+## Environments
+
+`src/environments/` holds three configs, selected by build configuration:
+
+| File                          | Used by                | API / hub base            |
+| ----------------------------- | ---------------------- | ------------------------- |
+| `environment.development.ts`  | `npm start`            | `http://localhost:5103`   |
+| `environment.docker.ts`       | `ng build -c docker`   | relative (`/api`, `/hubs`) via nginx |
+| `environment.ts`              | default production     | `http://localhost:5103`   |
+
+---
+
+## Build
 
 ```bash
-ng e2e
+npm run build                 # production build → dist/gridpulse/browser
+npx ng build -c docker        # relative-URL build used by the Docker image
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Docker
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The `Dockerfile` builds the app with the `docker` configuration and serves it via nginx,
+proxying `/api` and `/hubs` (WebSocket) to the API container. It is built and orchestrated by
+the Compose stack in `GridPulse-server` — see that repo's README to run the full system with
+one `docker compose up`.
+
+---
+
+## Routes
+
+- `/login` — public
+- `/dashboard` — guarded; device list (default), `devices/:id` (detail + chart), `alerts`
