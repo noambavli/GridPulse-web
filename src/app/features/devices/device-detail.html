@@ -1,0 +1,32 @@
+<section class="detail">
+  <a class="back" routerLink="/dashboard">← Devices</a>
+
+  @if (loading()) {
+    <p class="state">Loading device…</p>
+  } @else if (error()) {
+    <p class="state state--error">{{ error() }}</p>
+  } @else {
+    @if (device(); as d) {
+      <header class="detail__head">
+        <h1>{{ d.name }}</h1>
+        <div class="detail__meta">
+          <span class="chip chip--type">{{ d.type }}</span>
+          <span class="chip">{{ d.status }}</span>
+          <span>{{ d.location }}</span>
+          <span class="serial">{{ d.serialNumber }}</span>
+        </div>
+      </header>
+    }
+
+    <div class="chart-card">
+      <div class="chart-card__title">Hourly consumption (kWh)</div>
+      @if (buckets().length === 0) {
+        <p class="state">No readings yet for this device.</p>
+      } @else {
+        <div class="chart-wrap">
+          <canvas #chart></canvas>
+        </div>
+      }
+    </div>
+  }
+</section>
