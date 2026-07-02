@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
-// Placeholder shell — the device list and charts are added in later steps.
+// App shell: top navigation + a router outlet for the feature views.
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

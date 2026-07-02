@@ -1,0 +1,107 @@
+.devices {
+  max-width: 1100px;
+  margin: 0 auto;
+
+  &__title {
+    margin: 0 0 1.25rem;
+    color: #0f172a;
+  }
+}
+
+.state {
+  color: #64748b;
+
+  &--error {
+    color: #b91c1c;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.1rem;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 24px rgba(2, 6, 23, 0.08);
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 1.02rem;
+  }
+
+  &__type {
+    font-size: 0.82rem;
+    color: #2563eb;
+    font-weight: 600;
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: #475569;
+  }
+
+  &__serial {
+    font-family: ui-monospace, monospace;
+    color: #94a3b8;
+  }
+
+  &__installed {
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+}
+
+.status {
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: #e2e8f0;
+  color: #475569;
+
+  &--online {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  &--offline {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  &--maintenance {
+    background: #fef9c3;
+    color: #a16207;
+  }
+}

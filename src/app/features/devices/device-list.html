@@ -1,0 +1,35 @@
+<section class="devices">
+  <h1 class="devices__title">Devices</h1>
+
+  @if (loading()) {
+    <p class="state">Loading devices…</p>
+  } @else if (error()) {
+    <p class="state state--error">{{ error() }}</p>
+  } @else if (devices().length === 0) {
+    <p class="state">No devices found.</p>
+  } @else {
+    <div class="grid">
+      @for (device of devices(); track device.id) {
+        <a class="card" [routerLink]="['devices', device.id]">
+          <div class="card__head">
+            <span class="card__name">{{ device.name }}</span>
+            <span
+              class="status"
+              [class.status--online]="device.status === 'Online'"
+              [class.status--offline]="device.status === 'Offline'"
+              [class.status--maintenance]="device.status === 'Maintenance'"
+            >
+              {{ device.status }}
+            </span>
+          </div>
+          <div class="card__type">{{ device.type }}</div>
+          <div class="card__meta">
+            <span>{{ device.location }}</span>
+            <span class="card__serial">{{ device.serialNumber }}</span>
+          </div>
+          <div class="card__installed">Installed {{ device.installedAt | date: 'mediumDate' }}</div>
+        </a>
+      }
+    </div>
+  }
+</section>
