@@ -1,6 +1,11 @@
 <section class="alerts">
   <div class="alerts__header">
-    <h1>Alerts</h1>
+    <div class="alerts__title">
+      <h1>Alerts</h1>
+      @if (connected()) {
+        <span class="live"><span class="live__dot"></span>Live</span>
+      }
+    </div>
     <div class="filters">
       <select #sev (change)="onSeverityChange(sev.value)">
         <option value="">All severities</option>

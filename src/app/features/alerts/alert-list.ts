@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ApiService } from '../../core/services/api.service';
 import { AuthService } from '../../core/services/auth.service';
+import { RealtimeService } from '../../core/services/realtime.service';
 import { Alert } from '../../core/models';
 
 @Component({
@@ -13,8 +15,10 @@ import { Alert } from '../../core/models';
 export class AlertList {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
+  private readonly realtime = inject(RealtimeService);
 
   protected readonly isAdmin = this.auth.isAdmin;
+  protected readonly connected = this.realtime.connected;
 
   protected readonly alerts = signal<Alert[]>([]);
   protected readonly loading = signal(true);
@@ -26,6 +30,24 @@ export class AlertList {
 
   constructor() {
     this.load();
+
+    void this.realtime.ensureStarted();
+    this.realtime.alerts$.pipe(takeUntilDestroyed()).subscribe((alert) => {
+      // New alerts are always unresolved; only surface them if they match active filters.
+      if (this.matchesFilters(alert)) {
+        this.alerts.update((current) => [alert, ...current]);
+      }
+    });
+  }
+
+  private matchesFilters(alert: Alert): boolean {
+    if (this.severity() && alert.severity !== this.severity()) {
+      return false;
+    }
+    if (this.status() === 'resolved') {
+      return false;
+    }
+    return true;
   }
 
   onSeverityChange(value: string): void {
