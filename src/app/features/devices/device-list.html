@@ -2,7 +2,7 @@
   <h1 class="devices__title">Devices</h1>
 
   @if (loading()) {
-    <p class="state">Loading devices…</p>
+    <p class="state"><span class="spinner"></span>Loading devices…</p>
   } @else if (error()) {
     <p class="state state--error">{{ error() }}</p>
   } @else if (devices().length === 0) {

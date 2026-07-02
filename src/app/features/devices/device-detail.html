@@ -2,7 +2,7 @@
   <a class="back" routerLink="/dashboard">← Devices</a>
 
   @if (loading()) {
-    <p class="state">Loading device…</p>
+    <p class="state"><span class="spinner"></span>Loading device…</p>
   } @else if (error()) {
     <p class="state state--error">{{ error() }}</p>
   } @else {

@@ -3,6 +3,25 @@
   box-sizing: border-box;
 }
 
+/* Inline loading spinner used across feature states */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #cbd5e1;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  vertical-align: -3px;
+  margin-right: 8px;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 html,
 body {
   margin: 0;

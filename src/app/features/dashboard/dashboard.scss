@@ -93,3 +93,20 @@
 .placeholder {
   color: #64748b;
 }
+
+@media (max-width: 640px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+
+    &__nav {
+      order: 3;
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  .content {
+    padding: 1.25rem 1rem;
+  }
+}

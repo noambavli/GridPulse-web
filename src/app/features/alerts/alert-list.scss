@@ -4,6 +4,7 @@
 
   &__header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
@@ -78,8 +79,13 @@
   }
 }
 
+.table-scroll {
+  overflow-x: auto;
+}
+
 .table {
   width: 100%;
+  min-width: 640px;
   border-collapse: collapse;
   background: #fff;
   border: 1px solid #e2e8f0;

@@ -26,10 +26,11 @@
   }
 
   @if (loading()) {
-    <p class="state">Loading alerts…</p>
+    <p class="state"><span class="spinner"></span>Loading alerts…</p>
   } @else if (alerts().length === 0) {
     <p class="state">No alerts match the current filters.</p>
   } @else {
+    <div class="table-scroll">
     <table class="table">
       <thead>
         <tr>
@@ -84,5 +85,6 @@
         }
       </tbody>
     </table>
+    </div>
   }
 </section>
