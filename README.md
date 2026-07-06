@@ -1,14 +1,9 @@
-# Gridpulse
-
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.5.
-
-## Development server
-
-To start a local development server, run:
+# GridPulse Web
 
 Angular dashboard for **GridPulse**, a real-time energy / IoT consumption monitor. It handles
-login, lists devices, charts consumption trends, shows and resolves alerts, and updates live
-over SignalR.
+login, lists devices, charts consumption trends, shows and resolves alerts, updates live over
+SignalR, and includes an **"Ask AI" chat** that answers questions about the grid — streaming
+the assistant's answer token-by-token and showing which data queries it ran.
 
 The backend API and the full Docker Compose stack live in a separate repository
 ([`GridPulse-server`](https://github.com/noambavli/GridPulse-server)).
@@ -20,6 +15,7 @@ The backend API and the full Docker Compose stack live in a separate repository
 - Angular 22 (standalone components, signals, lazy-loaded routes)
 - Chart.js for consumption trends
 - `@microsoft/signalr` for live readings and alerts
+- Streaming AI chat via `fetch` + Server-Sent Events (`AssistantService`)
 - JWT auth (HTTP interceptor + route guard), SCSS styling
 
 ---
@@ -78,4 +74,12 @@ one `docker compose up`.
 ## Routes
 
 - `/login` — public
-- `/dashboard` — guarded; device list (default), `devices/:id` (detail + chart), `alerts`
+- `/dashboard` — guarded; device list (default), `devices/:id` (detail + chart), `alerts`,
+  `assistant` (Ask AI chat)
+
+## AI chat
+
+The `assistant` route streams answers from the API's `POST /api/assistant/ask` endpoint. It uses
+`fetch` (not `HttpClient`) so it can POST, send the JWT, and read the Server-Sent Events stream
+incrementally — `EventSource` supports none of those. The API needs an OpenAI key configured;
+see the server repo's README.

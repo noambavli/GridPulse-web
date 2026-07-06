@@ -1,0 +1,77 @@
+<section class="assistant">
+  <div class="assistant__header">
+    <div class="assistant__title">
+      <span class="assistant__mark">✨</span>
+      <div>
+        <h1>Ask GridPulse</h1>
+        <p class="assistant__sub">AI analyst grounded in your live grid data</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat" #scroll>
+    @if (messages().length === 0) {
+      <div class="empty">
+        <p class="empty__lead">Ask a question about your devices, consumption, or alerts.</p>
+        <div class="suggestions">
+          @for (s of suggestions; track s) {
+            <button type="button" class="suggestion" (click)="useSuggestion(s)">{{ s }}</button>
+          }
+        </div>
+      </div>
+    }
+
+    @for (message of messages(); track $index) {
+      <div class="msg" [class.msg--user]="message.role === 'user'">
+        <div class="msg__avatar">{{ message.role === 'user' ? 'You' : 'AI' }}</div>
+        <div class="msg__body">
+          @if (message.tools && message.tools.length > 0) {
+            <div class="tools">
+              @for (tool of message.tools; track $index) {
+                <span class="tool-chip">🔧 {{ toolLabel(tool) }}</span>
+              }
+            </div>
+          }
+          @if (message.content) {
+            <div class="msg__text" [class.msg__text--error]="message.error">{{ message.content }}</div>
+          }
+          @if (message.streaming && !message.content) {
+            <div class="msg__thinking"><span class="spinner"></span>Thinking…</div>
+          }
+          @if (message.streaming && message.content) {
+            <span class="cursor">▋</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <form class="composer" (ngSubmit)="send()">
+    <div class="composer__field">
+      <textarea
+        class="composer__input"
+        [class.composer__input--error]="tooLong()"
+        rows="1"
+        placeholder="Ask about devices, consumption, or alerts…"
+        [ngModel]="draft()"
+        (ngModelChange)="draft.set($event)"
+        (keydown)="onKeydown($event)"
+        name="draft"
+      ></textarea>
+      @if (tooLong()) {
+        <span class="composer__count composer__count--error"
+          >Too long by {{ -remaining() | number }} characters</span
+        >
+      } @else if (remaining() <= 200) {
+        <span class="composer__count">{{ remaining() | number }} characters left</span>
+      }
+    </div>
+    @if (busy()) {
+      <button type="button" class="composer__btn composer__btn--stop" (click)="stop()">Stop</button>
+    } @else {
+      <button type="submit" class="composer__btn" [disabled]="!draft().trim() || tooLong()">
+        Send
+      </button>
+    }
+  </form>
+</section>

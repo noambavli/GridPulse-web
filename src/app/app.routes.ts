@@ -23,6 +23,10 @@ export const routes: Routes = [
         path: 'alerts',
         loadComponent: () => import('./features/alerts/alert-list').then((m) => m.AlertList),
       },
+      {
+        path: 'assistant',
+        loadComponent: () => import('./features/assistant/assistant').then((m) => m.Assistant),
+      },
     ],
   },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
